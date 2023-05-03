@@ -25,6 +25,11 @@ BlockArchitect_handler:
         on piston retracts:
         - if <context.blocks.filter[has_flag[custom_block]].any>:
             - determine cancelled
+        on block burns location_flagged:custom_block:
+        - if <context.location.flag[custom_block.burn].if_null[false]>:
+            - run BlockArchitect_remove_custom_block def.location:<context.location>
+        - else:
+            - determine cancelled
 BA_match_item:
     type: procedure
     debug: false
@@ -52,6 +57,17 @@ BlockArchitect_remove_custom_block:
     - remove <[location].flag[custom_block.entity]>
     - flag <[location]> custom_block:!
     - flag <[location].world> custom_blocks:<-:<[location]>
+BlockArchitect_custom_block_powered_event:
+    type: event
+    debug: false
+    events:
+        on noteblock plays note location_flagged:custom_block:
+        - define script <context.location.flag[custom_block.entity].item.script>
+        - define data <[script].parsed_key[data.custom_block].if_null[null]>
+        - determine cancelled if:<[data].get[powerable].if_null[false].not>
+        - determine passively cancelled
+        - customevent id:BlockArchitect_custom_block_powered_event context:<map[location=<context.location>;data=<[data]>]>
+        - customevent id:BlockArchitect_custom_block_powered_event_<[script].name> context:<map[location=<context.location>;data=<[data]>]>
 BlockArchitect_light_engine:
     type: world
     debug: false
