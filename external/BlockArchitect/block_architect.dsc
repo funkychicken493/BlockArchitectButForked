@@ -66,8 +66,7 @@ BlockArchitect_custom_block_powered_event:
         - define data <[script].parsed_key[data.custom_block].if_null[null]>
         - determine cancelled if:<[data].get[powerable].if_null[false].not>
         - determine passively cancelled
-        - customevent id:BlockArchitect_custom_block_powered_event context:<map[location=<context.location>;data=<[data]>]>
-        - customevent id:BlockArchitect_custom_block_powered_event_<[script].name> context:<map[location=<context.location>;data=<[data]>]>
+        - inject <[script]> path:data.custom_block.on_powered if:<[data].deep_get[custom_block.on_powered].exists>
 BlockArchitect_light_engine:
     type: world
     debug: false

@@ -4,6 +4,7 @@ custom_speaker:
     data:
         custom_block:
             drops: custom_speaker
+            on_powered: custom_speaker_activated
     material: note_block
     mechanisms:
         custom_model_data: 3
@@ -11,10 +12,9 @@ custom_speaker:
         custom_block:
             powerable: true
             burn: false
-            
+
 custom_speaker_activated:
-    type: world
+    type: task
     debug: false
-    events:
-        after custom event id:BlockArchitect_custom_block_powered_event_custom_speaker:
-            - playsound <context.location> sound:entity_experience_orb_pickup volume:1.0 pitch:1.0
+    script:
+        - playsound <context.location> sound:entity_experience_orb_pickup volume:1.0 pitch:1.0
